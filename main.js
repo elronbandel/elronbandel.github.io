@@ -8,7 +8,7 @@ function addItem() {
   const newItem = newItemInput.value;
 
   // Send a POST request to the Flask API to add the new item
-  fetch("http://elronbandel.pythonanywhere.com/links", {
+  fetch("https://elronbandel.pythonanywhere.com/links", {
     method: "POST",
     body: JSON.stringify({item: newItem}),
     headers: {
@@ -31,7 +31,7 @@ function addItem() {
 }
 
 // When the page loads, send a GET request to the Flask API to get the current reading list items
-fetch("http://elronbandel.pythonanywhere.com/links")
+fetch("https://elronbandel.pythonanywhere.com/links")
   .then(response => response.json())
   .then(data => {
     // Update the reading list on the front-end with the current items
