@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Reading List App</title>
+    <style>
+      /* Add some basic styling to the input box and button */
+      input[type=text] {
+        width: 50%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      
+      button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: #45a049;
+      }
+      
+      /* Add some basic styling to the reading list items */
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      li {
+        margin: 5px;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Reading List</h1>
+    <input type="text" id="reading-list-item" placeholder="Enter a new reading list item...">
+    <button onclick="addItem()">Add Item</button>
+    <ul id="reading-list">
+    </ul>
+    <script src="main.js"></script>
+  </body>
+</html>
