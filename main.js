@@ -1,6 +1,7 @@
-// Get the input box and the reading list element from the HTML
+// Get the input box, the reading list element, and the item type select element from the HTML
 const newItemInput = document.getElementById("reading-list-item");
 const readingList = document.getElementById("reading-list");
+const itemTypeSelect = document.getElementById("item-type");
 
 // Define a function to add a new reading list item to the list
 function addItem() {
@@ -11,8 +12,7 @@ function addItem() {
   let newItemType = "web page";
   
   // Check if the user has selected a different item type
-  const itemTypeSelect = document.getElementById("item-type");
-  if (itemTypeSelect.value !== "web page") {
+  if (itemTypeSelect && itemTypeSelect.value !== "web page") {
     newItemType = itemTypeSelect.value;
   }
 
