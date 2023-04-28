@@ -5,12 +5,21 @@ const readingList = document.getElementById("reading-list");
 // Define a function to add a new reading list item to the list
 function addItem() {
   // Get the value of the input box
-  const newItem = newItemInput.value;
+  const newItemUrl = newItemInput.value;
+  
+  // Set the default item type as "web page"
+  let newItemType = "web page";
+  
+  // Check if the user has selected a different item type
+  const itemTypeSelect = document.getElementById("item-type");
+  if (itemTypeSelect.value !== "web page") {
+    newItemType = itemTypeSelect.value;
+  }
 
   // Send a POST request to the Flask API to add the new item
   fetch("https://elronbandel.pythonanywhere.com/links", {
     method: "POST",
-    body: JSON.stringify({item: newItem}),
+    body: JSON.stringify({url: newItemUrl, type: newItemType}),
     headers: {
       "Content-Type": "application/json"
     }
@@ -21,7 +30,7 @@ function addItem() {
     readingList.innerHTML = "";
     for (const item of data) {
       const li = document.createElement("li");
-      li.textContent = item;
+      li.textContent = `${item.url} (${item.type})`;
       readingList.appendChild(li);
     }
   });
@@ -37,7 +46,7 @@ fetch("https://elronbandel.pythonanywhere.com/links")
     // Update the reading list on the front-end with the current items
     for (const item of data) {
       const li = document.createElement("li");
-      li.textContent = item;
+      li.textContent = `${item.url} (${item.type})`;
       readingList.appendChild(li);
     }
   });
