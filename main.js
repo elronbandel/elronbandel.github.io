@@ -49,20 +49,27 @@ const newItemInput = document.getElementById("reading-list-item");
 const readingList = document.getElementById("reading-list");
 const itemTypeSelect = document.getElementById("item-type");
 
-// Define a function to add a new reading list item to the list
+function createListItem(item) {
+  const li = document.createElement("li");
+  const title = document.createElement("a");
+  title.href = item.url;
+  title.textContent = item.url;
+  li.appendChild(title);
+  const downloadBtn = document.createElement("button");
+  downloadBtn.textContent = "Download";
+  downloadBtn.addEventListener("click", () => {
+    window.location.href = getDocumentLink(item.url, item.type);
+  });
+  li.appendChild(downloadBtn);
+  return li;
+}
+
 function addItem() {
-  // Get the value of the input box
   const newItemUrl = newItemInput.value;
-  
-  // Set the default item type as "web page"
   let newItemType = "web page";
-  
-  // Check if the user has selected a different item type
   if (itemTypeSelect && itemTypeSelect.value !== "web page") {
     newItemType = itemTypeSelect.value;
   }
-
-  // Send a POST request to the Flask API to add the new item
   fetch("https://elronbandel.pythonanywhere.com/links", {
     method: "POST",
     body: JSON.stringify({url: newItemUrl, type: newItemType}),
@@ -72,27 +79,20 @@ function addItem() {
   })
   .then(response => response.json())
   .then(data => {
-    // Update the reading list on the front-end with the new item
     readingList.innerHTML = "";
     for (const item of data) {
-      const li = document.createElement("li");
-      li.textContent =  getDocumentLink(item.url, item.type);
+      const li = createListItem(item);
       readingList.appendChild(li);
     }
   });
-
-  // Clear the input box after adding the new item
   newItemInput.value = "";
 }
 
-// When the page loads, send a GET request to the Flask API to get the current reading list items
 fetch("https://elronbandel.pythonanywhere.com/links")
   .then(response => response.json())
   .then(data => {
-    // Update the reading list on the front-end with the current items
     for (const item of data) {
-      const li = document.createElement("li");
-      li.textContent = getDocumentLink(item.url, item.type);
+      const li = createListItem(item);
       readingList.appendChild(li);
     }
   });
