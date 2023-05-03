@@ -1,3 +1,49 @@
+function getDotepubLink(url) {
+  if (!url || typeof url !== "string") {
+    throw new Error("Invalid URL");
+  }
+
+  const encodedUrl = encodeURIComponent(url);
+  const dotepubLink = `https://dotepub.com/converter/?url=${encodedUrl}&fmt=epub&imm=1&lang=en`;
+
+  return dotepubLink;
+}
+
+function getArxivId(arxivLink) {
+  if (!arxivLink || typeof arxivLink !== "string") {
+    throw new Error("Invalid arXiv link");
+  }
+
+  const match = arxivLink.match(/^https?:\/\/arxiv\.org\/(abs|pdf)\/([\d\.]+)$/);
+  if (!match) {
+    throw new Error("Invalid arXiv link");
+  }
+
+  const arxivId = match[2];
+
+  return arxivId;
+}
+
+function getDocumentLink(url, type) {
+  if (!url || typeof url !== "string") {
+    throw new Error("Invalid URL");
+  }
+
+  if (!type || typeof type !== "string" || !["web", "arxiv"].includes(type)) {
+    throw new Error("Invalid document type");
+  }
+
+  if (type === "web") {
+    const dotepubLink = getDotepubLink(url);
+    return dotepubLink;
+  } else if (type === "arxiv") {
+    const arxivVanityLink = `https://www.arxiv-vanity.com/papers/${getArxivId(url)}/`;
+    const dotepubLink = getDotepubLink(arxivVanityLink);
+    return dotepubLink;
+  }
+}
+
+
 // Get the input box, the reading list element, and the item type select element from the HTML
 const newItemInput = document.getElementById("reading-list-item");
 const readingList = document.getElementById("reading-list");
@@ -30,7 +76,7 @@ function addItem() {
     readingList.innerHTML = "";
     for (const item of data) {
       const li = document.createElement("li");
-      li.textContent = `${item.url} (${item.type})`;
+      li.textContent =  getDocumentLink(item.url, item.type);
       readingList.appendChild(li);
     }
   });
@@ -46,7 +92,7 @@ fetch("https://elronbandel.pythonanywhere.com/links")
     // Update the reading list on the front-end with the current items
     for (const item of data) {
       const li = document.createElement("li");
-      li.textContent = `${item.url} (${item.type})`;
+      li.textContent = getDocumentLink(item.url, item.type);
       readingList.appendChild(li);
     }
   });
